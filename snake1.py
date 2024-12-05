@@ -41,7 +41,7 @@ def text_screen(text, color, x, y):
 while not exit_game:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            exit_game == True
+            exit_game = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RIGHT:
                 velocity_x = init_velocity
