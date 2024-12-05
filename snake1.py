@@ -8,8 +8,8 @@ red = (255,0,0)
 black = (0,0,0)
 
 #creating window
-screen_width = 900
-screen_height = 600
+screen_width = 650
+screen_height = 550
 gameWindow = pygame.display.set_mode((screen_width,screen_height))
 
 #game title
@@ -27,6 +27,7 @@ food_x = random.randint(20, int(screen_width/2))
 food_y = random.randint(20, int(screen_height/2))
 snake_size = 10
 fps = 30
+score = 0
 
 
 clock = pygame.time.Clock()
@@ -51,6 +52,12 @@ while not exit_game:
 
     snake_x += velocity_x
     snake_y += velocity_y
+
+    if abs(snake_x - food_x)<5 and abs(snake_y - food_y)<5:
+        score += 1
+        print("SCORE: ",score)
+        food_x = random.randint(20, int(screen_width/2))
+        food_y = random.randint(20, int(screen_height/2))
     gameWindow.fill(white)
     pygame.draw.rect(gameWindow, red, [food_x, food_y, snake_size, snake_size])
     pygame.draw.rect(gameWindow, black, [snake_x, snake_y, snake_size, snake_size])
