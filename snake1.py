@@ -1,5 +1,6 @@
 import pygame
 import random
+import os
 pygame.init()
 
 #colors
@@ -63,6 +64,10 @@ def game_loop():
 
     snk_list =[]
     snake_length = 1
+
+    if(not os.path.exists("hiscore.txt")):
+        with open("hiscore.txt", "w") as f:
+                f.write("0")
 
     with open("hiscore.txt", "r") as f:
         hiscore = f.read()
