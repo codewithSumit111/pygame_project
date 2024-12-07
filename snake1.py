@@ -8,8 +8,8 @@ red = (255,0,0)
 black = (0,0,0)
 
 #creating window
-screen_width = 650
-screen_height = 550
+screen_width = 700
+screen_height = 600
 gameWindow = pygame.display.set_mode((screen_width,screen_height))
 
 #game title
@@ -27,7 +27,23 @@ def plot_snake(gameWindow, color, snk_list, snake_size):
 
 clock = pygame.time.Clock()
 font = pygame.font.SysFont(None, 40)
+fps = 40
 
+#creating a Home Screen/Welcome Screen
+def Welcome():
+    exit_game = False
+    while not exit_game:
+        gameWindow.fill(black)
+        text_screen("WELCOME TO SNAKES ", red, 200, 250)
+        text_screen("PRESS SPACE BAR TO START THE GAME", white, 100, 290)
+        for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    exit_game = True
+                if event.type == pygame.KEYDOWN:
+                     if event.key == pygame.K_SPACE:
+                        game_loop()
+        pygame.display.update()
+        clock.tick(fps)
 #Game loop
 def game_loop():
 
@@ -43,7 +59,6 @@ def game_loop():
     snake_size = 18
     food_size = 19
     init_velocity = 5
-    fps = 40
     score = 0
 
     snk_list =[]
@@ -56,7 +71,7 @@ def game_loop():
         if game_over:
             with open("hiscore.txt", "w") as f:
                 f.write(str(hiscore))
-            # gameWindow.fill(white)
+
             text_screen("GAME OVER!! PRESS ENTER TO CONTINUE", red, 25, 200)
             
             for event in pygame.event.get():
@@ -64,7 +79,7 @@ def game_loop():
                     exit_game = True
                 if event.type == pygame.KEYDOWN:
                      if event.key == pygame.K_RETURN:
-                        game_loop()
+                        Welcome()
 
         else:
             for event in pygame.event.get():
@@ -121,4 +136,4 @@ def game_loop():
 
     pygame.quit()
     quit()
-game_loop()
+Welcome()
