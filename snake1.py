@@ -49,8 +49,13 @@ def game_loop():
     snk_list =[]
     snake_length = 1
 
+    with open("hiscore.txt", "r") as f:
+        hiscore = f.read()
+
     while not exit_game:
         if game_over:
+            with open("hiscore.txt", "w") as f:
+                f.write(str(hiscore))
             # gameWindow.fill(white)
             text_screen("GAME OVER!! PRESS ENTER TO CONTINUE", red, 25, 200)
             
@@ -83,13 +88,16 @@ def game_loop():
             snake_y += velocity_y
 
             if abs(snake_x - food_x)<10 and abs(snake_y - food_y)<10:
-                score += 1
+                score += 10
                 food_x = random.randint(20, int(screen_width/2))
                 food_y = random.randint(20, int(screen_height/2))
                 snake_length += 5
 
+                if score > int(hiscore):
+                    hiscore = score
+
             gameWindow.fill(white)
-            text_screen("SCORE: "+ str(score*10), red, 5, 5)
+            text_screen("Score: "+ str(score) +"  HighScore: "+ str(hiscore), red, 5, 5)
             pygame.draw.rect(gameWindow, red, [food_x, food_y, food_size, food_size])
 
             head =[]
