@@ -1,7 +1,10 @@
 import pygame
 import random
 import os
+
 pygame.init()
+
+pygame.mixer.init()
 
 #colors
 white = (255,255,255)
@@ -9,9 +12,17 @@ red = (255,0,0)
 black = (0,0,0)
 
 #creating window
-screen_width = 700
-screen_height = 600
+screen_width = 720
+screen_height = 550
 gameWindow = pygame.display.set_mode((screen_width,screen_height))
+
+#background image 
+bgmi= pygame.image.load("SUMIT.png")
+bgmi= pygame.transform.scale(bgmi, (screen_width, screen_height)).convert_alpha()
+bgg = pygame.image.load("bg.jpg")
+bgg = pygame.transform.scale(bgg, (screen_width, screen_height)).convert_alpha()
+out = pygame.image.load("outro.png")
+out = pygame.transform.scale(out, (screen_width, screen_height)).convert_alpha()
 
 #game title
 pygame.display.set_caption("SnakesWithSumit")
@@ -35,13 +46,15 @@ def Welcome():
     exit_game = False
     while not exit_game:
         gameWindow.fill(black)
-        text_screen("WELCOME TO SNAKES ", red, 200, 250)
-        text_screen("PRESS SPACE BAR TO START THE GAME", white, 100, 290)
+        gameWindow.blit(bgmi, (0,0))
+        text_screen("WELCOME TO SNAKES ", red, 190, 260)
         for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     exit_game = True
                 if event.type == pygame.KEYDOWN:
-                     if event.key == pygame.K_SPACE:
+                     if event.key == pygame.K_RETURN:
+                        pygame.mixer.music.load('back.mp3')
+                        pygame.mixer.music.play()
                         game_loop()
         pygame.display.update()
         clock.tick(fps)
@@ -77,7 +90,9 @@ def game_loop():
             with open("hiscore.txt", "w") as f:
                 f.write(str(hiscore))
 
-            text_screen("GAME OVER!! PRESS ENTER TO CONTINUE", red, 25, 200)
+            gameWindow.fill(black)
+            gameWindow.blit(out, (0,0))
+            text_screen("Score: "+str(score), red, 275, 350)
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -85,6 +100,8 @@ def game_loop():
                 if event.type == pygame.KEYDOWN:
                      if event.key == pygame.K_RETURN:
                         Welcome()
+            pygame.display.update()
+            clock.tick(fps)
 
         else:
             for event in pygame.event.get():
@@ -120,6 +137,7 @@ def game_loop():
                     hiscore = score
 
             gameWindow.fill(white)
+            gameWindow.blit(bgg, (0,0))
             text_screen("Score: "+ str(score) +"  HighScore: "+ str(hiscore), red, 5, 5)
             pygame.draw.rect(gameWindow, red, [food_x, food_y, food_size, food_size])
 
@@ -133,9 +151,13 @@ def game_loop():
 
             if head in snk_list[:-1]:
                 game_over = True
+                pygame.mixer.music.load('gameover.mp3')
+                pygame.mixer.music.play()
             
             if snake_x<0 or snake_x>screen_width or snake_y<0 or snake_y>screen_height:
                 game_over = True
+                pygame.mixer.music.load('gameover.mp3')
+                pygame.mixer.music.play()
 
             # pygame.draw.rect(gameWindow, black, [snake_x, snake_y, snake_size, snake_size])
             plot_snake(gameWindow, black, snk_list, snake_size)
